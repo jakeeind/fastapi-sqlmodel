@@ -13,9 +13,7 @@ class Author(BaseAuthor, table=True):
     __tablename__ = "authors"
     id: typing.Optional[int] = Field(default=None, primary_key=True)
     created_date: datetime = Field(sa_column=Column(TIMESTAMP, default=datetime.utcnow))
-    updated_date: datetime = Field(
-        sa_column=Column(TIMESTAMP, default=datetime.utcnow, onupdate=datetime.utcnow)
-    )
+    updated_date: datetime = Field(sa_column=Column(TIMESTAMP, default=datetime.utcnow, onupdate=datetime.utcnow))
 
     class Config:
         orm_mode = True
@@ -25,6 +23,10 @@ class AuthorSchema(BaseAuthor):
     id: int
     created_date: datetime
     updated_date: datetime
+
+
+class FindAuthor(BaseAuthor):
+    pass
 
 
 class CreateAuthor(BaseAuthor):

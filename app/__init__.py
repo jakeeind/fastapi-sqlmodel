@@ -3,6 +3,7 @@ from fastapi import FastAPI
 from app.api import init_router
 from app.models import init_db_and_tables, close_db_connection
 from app.core.app import get_app_settings, AppSettings
+from fastapi_pagination.api import _add_pagination
 
 
 def create_app():
@@ -14,6 +15,7 @@ def create_app():
     async def lifespan(app: FastAPI):
         await init_router(app, settings=settings)
         init_db_and_tables()
+        _add_pagination(app)
         yield
         close_db_connection()
 

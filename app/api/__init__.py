@@ -4,14 +4,13 @@ import pathlib
 from fastapi.exceptions import RequestValidationError
 from starlette.exceptions import HTTPException
 from loguru import logger
-
-# from app.utils.http_error import http_error_handler
-# from app.utils.validation_error import http422_error_handler
+from app.utils.http_error import http_error_handler
+from app.utils.validation_error import http422_error_handler
 
 
 async def init_router(app, settings):
-    # app.add_exception_handler(HTTPException, http_error_handler)
-    # app.add_exception_handler(RequestValidationError, http422_error_handler)
+    app.add_exception_handler(HTTPException, http_error_handler)
+    app.add_exception_handler(RequestValidationError, http422_error_handler)
 
     current_directory = pathlib.Path(__file__).parent
     routers = await get_subrouters(current_directory)

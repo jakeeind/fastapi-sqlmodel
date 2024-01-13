@@ -1,7 +1,9 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 from sqlmodel import Session, select
 from app.models import engine
 from app.models.author import Author, CreateAuthor, AuthorSchema
+from app.services.author_service import AuthorService
+import typing
 
 router = APIRouter(prefix="/author")
 
@@ -21,3 +23,8 @@ def create_author(author_info: CreateAuthor):
         session.commit()
         session.refresh(author)
         return author
+
+
+@router.get("/{author_id}", response_model=AuthorSchema)
+def get_author(author_id: int, service: typing.Annotated[AuthorService, Depends(AuthorService)]):
+    return service.get_by_id(author_id)
