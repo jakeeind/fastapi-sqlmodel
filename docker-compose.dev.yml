@@ -1,0 +1,46 @@
+version: '3'
+services:
+  db:
+    container_name: postgresql
+    # platform: linux/arm64 #for platform error on Apple M1 chips
+    env_file:
+      - ./postgresql/.env
+    image: postgres:14-alpine
+    volumes:
+      # - strapi-data:/var/lib/postgresql/data/ #using a volume
+      - ./deployment/postgresql/data:/var/lib/postgresql/data/ # if you want to use a bind folder
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
+    ports:
+      - '5432:5432'
+    networks:
+      - default
+
+  api:
+    container_name: api
+    env_file:
+      - ./.env.dev
+    build: .
+    volumes:
+      - ../deployment:/deployment
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - '8080:9000'
+    depends_on:
+      - db
+    networks:
+      - default
+    restart: always
+    environment:
+      - APP_ENV=dev
+      - LOGGING_LEVEL=10
+    command: /venv/bin/uvicorn app:create_app --host 0.0.0.0 --port 9000 --factory
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+networks:
+  default:
