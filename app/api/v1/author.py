@@ -1,18 +1,17 @@
 from fastapi import APIRouter, Depends
-from sqlmodel import Session, select
+from fastapi_pagination import Page
+from sqlmodel import Session
 from app.models import engine
-from app.models.author import Author, CreateAuthor, AuthorSchema
+from app.models.author import Author, CreateAuthor, AuthorSchema, FindAuthor
 from app.services.author_service import AuthorService
 import typing
 
 router = APIRouter(prefix="/author")
 
 
-@router.get("/")
-def get_authors():
-    with Session(engine) as session:
-        authors = session.exec(select(Author)).all()
-        return authors
+@router.get("/", response_model=Page[AuthorSchema])
+def get_authors(service: typing.Annotated[AuthorService, Depends(AuthorService)], find: FindAuthor = Depends()):
+    return service.get_by_options(find)
 
 
 @router.post("/", response_model=AuthorSchema)

@@ -26,7 +26,8 @@ class AuthorSchema(BaseAuthor):
 
 
 class FindAuthor(BaseAuthor):
-    pass
+    full_name: typing.Optional[str] = None
+    pseudonym: typing.Optional[str] = None
 
 
 class CreateAuthor(BaseAuthor):

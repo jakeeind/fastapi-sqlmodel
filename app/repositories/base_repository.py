@@ -2,6 +2,7 @@ from sqlmodel import Session, select
 from app.models import engine
 from app.core.exceptions import NotFoundError
 from sqlmodel import SQLModel
+from fastapi_pagination.ext.sqlmodel import paginate
 from typing import TypeVar
 
 T = TypeVar("T")
@@ -21,6 +22,4 @@ class BaseRepository:
 
     def read_by_options(self, schema: SQLModel):
         with Session(engine) as session:
-            # schema_dict = schema.model_dump(exclude_none=True)
-            query = session.exec(select(self.model))
-            return query
+            return paginate(session, select(self.model))
