@@ -1,18 +1,26 @@
-from sqlmodel import create_engine, SQLModel
+from sqlmodel import create_engine, SQLModel, Session
 from app.core.app import get_app_settings
+from .author import Author
+# from contextlib import contextmanager
+# from functools import lru_cache
+
+__all__ = [
+    "Author",
+]
 
 settings = get_app_settings()
-engine = create_engine(
-    "{db_engine}://{user}:{password}@{host}:{port}/{database}".format(
-        db_engine=settings.DB_ENGINE_MAPPER[settings.DB],
-        user=settings.DB_USER,
-        password=settings.DB_PASSWORD,
-        host=settings.DB_HOST,
-        port=settings.DB_PORT,
-        database=settings.DB_NAME,
-    ),
-    echo=settings.DEBUG,
-)
+
+engine = create_engine(settings.DB_URI, echo=settings.DEBUG, future=True)
+
+def get_session():
+    with Session(engine) as session:
+        try:
+            yield session
+        except:
+            session.rollback()
+            raise
+        finally:
+            session.close()
 
 
 def init_db_and_tables():

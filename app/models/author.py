@@ -15,9 +15,6 @@ class Author(BaseAuthor, table=True):
     created_date: datetime = Field(sa_column=Column(TIMESTAMP, default=datetime.utcnow))
     updated_date: datetime = Field(sa_column=Column(TIMESTAMP, default=datetime.utcnow, onupdate=datetime.utcnow))
 
-    class Config:
-        orm_mode = True
-
 
 class AuthorSchema(BaseAuthor):
     id: int

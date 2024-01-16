@@ -10,3 +10,9 @@ class BaseService:
 
     def get_by_options(self, schema):
         return self._repository.read_by_options(schema)
+
+    def create(self, schema):
+        return self._repository.create(schema)
+
+    def update(self, id: int, schema):
+        return self._repository.update(id, schema)
