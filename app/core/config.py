@@ -23,13 +23,14 @@ class Settings(BaseSettings):
         "mysql": "mysql+pymysql",
         "mongodb": "mongodb",
     }
-    DB: str = "mongodb"
+    DB: str = "postgresql"
     DB_HOST: str = "localhost"
-    DB_PORT: str = "27017"
+    DB_PORT: str = "5432"
     DB_USER: str = ""
     DB_NAME: str = ""
     DB_PASSWORD: str = ""
     DB_ENGINE: str = DB_ENGINE_MAPPER[DB]
+    DB_URI: str = f"{DB_ENGINE}://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
 
     # auth
     SECRET_KEY: str = "secret_key"
@@ -65,11 +66,7 @@ class Settings(BaseSettings):
 
     model_config = SettingsConfigDict(
         case_sensitive=True,
-        env_file=".env.dev"
-        if "dev" == ENV
-        else ".env"
-        if "prod" == ENV
-        else ".env.test",
+        env_file=".env" if "dev" == ENV else ".env.prod" if "prod" == ENV else ".env.test",
     )
 
 
