@@ -17,7 +17,7 @@ class BaseRepository:
     def read_by_id(self, id: int):
         query = self.session.get(self.model, id)
         if not query:
-            return NotFoundError(detail=f"{self.model.__name__} with id {id} not found")
+            raise NotFoundError(detail=f"{self.model.__name__} with id {id} not found")
         return query
 
     def read_by_options(self, schema: SQLModel):
@@ -39,11 +39,19 @@ class BaseRepository:
     def update(self, id: int, schema: SQLModel):
         query = self.session.get(self.model, id)
         if not query:
-            return NotFoundError(detail=f"{self.model.__name__} with id {id} not found")
+            raise NotFoundError(detail=f"{self.model.__name__} with id {id} not found")
         schema_dict = schema.model_dump(exclude_none=True)
         for key, value in schema_dict.items():
             setattr(query, key, value)
         self.session.add(query)
         self.session.commit()
         self.session.refresh(query)
+        return query
+
+    def delete(self, id: int):
+        query = self.session.get(self.model, id)
+        if not query:
+            raise NotFoundError(detail=f"{self.model.__name__} with id {id} not found")
+        self.session.delete(query)
+        self.session.commit()
         return query

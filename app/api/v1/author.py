@@ -1,10 +1,7 @@
 from fastapi import APIRouter, Depends
 from fastapi_pagination import Page
-from sqlmodel import Session
-from app.models import engine
-from app.models.author import Author, CreateAuthor, AuthorSchema, FindAuthor
+from app.models.author import CreateAuthor, AuthorSchema, FindAuthor
 from app.services.author_service import AuthorService
-from app.models import get_session
 import typing
 
 router = APIRouter(prefix="/author", tags=["Author"])
@@ -23,3 +20,15 @@ def create_author(author_info: CreateAuthor, service: typing.Annotated[AuthorSer
 @router.get("/{author_id}", response_model=AuthorSchema)
 def get_author(author_id: int, service: typing.Annotated[AuthorService, Depends(AuthorService)]):
     return service.get_by_id(author_id)
+
+
+@router.patch("/{author_id}", response_model=AuthorSchema)
+def update_author(
+    author_id: int, author_info: CreateAuthor, service: typing.Annotated[AuthorService, Depends(AuthorService)]
+):
+    return service.update(author_id, author_info)
+
+
+@router.delete("/{author_id}", response_model=AuthorSchema)
+def delete_author(author_id: int, service: typing.Annotated[AuthorService, Depends(AuthorService)]):
+    return service.delete(author_id)

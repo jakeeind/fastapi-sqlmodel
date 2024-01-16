@@ -16,3 +16,6 @@ class BaseService:
 
     def update(self, id: int, schema):
         return self._repository.update(id, schema)
+
+    def delete(self, id: int):
+        return self._repository.delete(id)
