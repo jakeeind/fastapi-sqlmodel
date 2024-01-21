@@ -1,5 +1,5 @@
 from app.models.author import Author
-from .base_repository import BaseRepository
+from .base import BaseRepository
 
 
 class AuthorRepository(BaseRepository):

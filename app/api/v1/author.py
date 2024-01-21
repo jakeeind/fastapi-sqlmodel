@@ -1,10 +1,7 @@
 from fastapi import APIRouter, Depends
 from fastapi_pagination import Page
 from app.models.author import CreateAuthor, AuthorSchema, FindAuthor
-from app.services.author_service import AuthorService
-# from fastapi_pagination.ext.sqlmodel import paginate
-# from sqlmodel import Session
-# from app.models import get_session
+from app.services.author import AuthorService
 import typing
 
 router = APIRouter(prefix="/author", tags=["Author"])
