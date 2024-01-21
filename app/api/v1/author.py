@@ -2,13 +2,20 @@ from fastapi import APIRouter, Depends
 from fastapi_pagination import Page
 from app.models.author import CreateAuthor, AuthorSchema, FindAuthor
 from app.services.author_service import AuthorService
+# from fastapi_pagination.ext.sqlmodel import paginate
+# from sqlmodel import Session
+# from app.models import get_session
 import typing
 
 router = APIRouter(prefix="/author", tags=["Author"])
 
 
 @router.get("/", response_model=Page[AuthorSchema])
-def get_authors(service: typing.Annotated[AuthorService, Depends(AuthorService)], find: FindAuthor = Depends()):
+def get_authors(
+    service: typing.Annotated[AuthorService, Depends(AuthorService)],
+    # session: Depends(get_session),
+    find: FindAuthor = Depends(),
+):
     return service.get_by_options(find)
 
 
