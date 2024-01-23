@@ -10,6 +10,7 @@ settings = get_app_settings()
 
 engine = create_engine(settings.DB_URI, echo=settings.DEBUG, future=True)
 
+
 def get_session():
     with Session(engine) as session:
         return session
