@@ -26,6 +26,3 @@ def create_app():
         return {"status": "healthy"}
 
     return app
-
-
-app = create_app()

@@ -1,8 +1,6 @@
 from sqlmodel import create_engine, SQLModel, Session
 from app.core.app import get_app_settings
 from .author import Author
-# from contextlib import contextmanager
-# from functools import lru_cache
 
 __all__ = [
     "Author",
