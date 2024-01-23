@@ -1,8 +1,8 @@
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
-from app.api import init_router
-from app.models import init_db_and_tables, close_db_connection
-from app.core.app import get_app_settings, AppSettings
+from api.router import init_router
+from api.models import init_db_and_tables, close_db_connection
+from api.core.app import get_app_settings, AppSettings
 from fastapi_pagination.api import _add_pagination
 
 

@@ -1,5 +1,5 @@
 from sqlmodel import create_engine, SQLModel, Session
-from app.core.app import get_app_settings
+from api.core.app import get_app_settings
 from .author import Author
 
 __all__ = [

@@ -1,5 +1,5 @@
 from .base import BaseService
-from app.repositories.author import AuthorRepository
+from api.repositories.author import AuthorRepository
 from fastapi import Depends
 
 

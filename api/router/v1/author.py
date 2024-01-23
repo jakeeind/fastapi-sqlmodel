@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 from fastapi_pagination import Page
-from app.models.author import CreateAuthor, AuthorSchema, FindAuthor
-from app.services.author import AuthorService
+from api.models.author import CreateAuthor, AuthorSchema, FindAuthor
+from api.services.author import AuthorService
 import typing
 
 router = APIRouter(prefix="/author", tags=["Author"])

@@ -1,4 +1,4 @@
-from app.repositories.base import BaseRepository
+from api.repositories.base import BaseRepository
 
 
 class BaseService:

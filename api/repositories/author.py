@@ -1,4 +1,4 @@
-from app.models.author import Author
+from api.models.author import Author
 from .base import BaseRepository
 
 

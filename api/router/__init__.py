@@ -4,8 +4,8 @@ import pathlib
 from fastapi.exceptions import RequestValidationError
 from starlette.exceptions import HTTPException
 from loguru import logger
-from app.utils.http_error import http_error_handler
-from app.utils.validation_error import http422_error_handler
+from api.utils.http_error import http_error_handler
+from api.utils.validation_error import http422_error_handler
 
 
 async def init_router(app, settings):

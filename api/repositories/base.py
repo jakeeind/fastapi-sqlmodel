@@ -1,10 +1,10 @@
 from sqlmodel import Session, select
-from app.core.exceptions import DuplicatedError, NotFoundError
+from api.core.exceptions import DuplicatedError, NotFoundError
 from sqlmodel import SQLModel
 from sqlalchemy.exc import IntegrityError
 from fastapi_pagination.ext.sqlmodel import paginate
-from app.utils.query_builder import dict_to_sqlalchemy_filter_options
-from app.models import get_session
+from api.utils.query_builder import dict_to_sqlalchemy_filter_options
+from api.models import get_session
 
 session = get_session()
 
