@@ -1,18 +1,20 @@
-from sqlmodel import Session, select
+from sqlmodel import select
 from api.core.exceptions import DuplicatedError, NotFoundError
 from sqlmodel import SQLModel
 from sqlalchemy.exc import IntegrityError
 from fastapi_pagination.ext.sqlmodel import paginate
 from api.utils.query_builder import dict_to_sqlalchemy_filter_options
 from api.models import get_session
-
-session = get_session()
+from sqlmodel import Session
 
 
 class BaseRepository:
-    def __init__(self, model, session: Session = get_session().__next__()) -> None:
+    def __init__(self, model, session: Session = get_session()) -> None:
         self.model = model
-        self.session = session
+        if session:
+            self.session = session
+        else:
+            self.session = get_session()
 
     def read_by_id(self, id: int):
         query = self.session.get(self.model, id)
@@ -43,9 +45,13 @@ class BaseRepository:
         schema_dict = schema.model_dump(exclude_none=True)
         for key, value in schema_dict.items():
             setattr(query, key, value)
-        self.session.add(query)
-        self.session.commit()
-        self.session.refresh(query)
+        try:
+            self.session.add(query)
+            self.session.commit()
+            self.session.refresh(query)
+        except IntegrityError as e:
+            self.session.rollback()
+            raise DuplicatedError(detail=str(e.orig))
         return query
 
     def delete(self, id: int):

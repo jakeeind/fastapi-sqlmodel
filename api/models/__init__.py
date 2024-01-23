@@ -12,13 +12,7 @@ engine = create_engine(settings.DB_URI, echo=settings.DEBUG, future=True)
 
 def get_session():
     with Session(engine) as session:
-        try:
-            yield session
-        except:
-            session.rollback()
-            raise
-        finally:
-            session.close()
+        return session
 
 
 def init_db_and_tables():
